@@ -73,15 +73,18 @@ void loop() {
         timeAtChange = millis();
       }
 
-      if ((timeAtChange - lastDebounceTime) > debounceDelay && reading != lastReading[i]) {
+      //if ((timeAtChange - lastDebounceTime) > debounceDelay && reading != lastReading[i]) {
+      if ((timeAtChange - lastDebounceTime) > debounceDelay) {
         int buttonState;
 
-        if (reading != lastReading[i]) {
-          buttonState = reading;
-        }
-        else {
+        //if (reading != lastReading[i]) {
+        buttonState = reading;
+        /**
+          }
+          else {
           buttonState = lastReading[i];
-        }
+          }
+        **/
 
         if (reading == LOW) {
           recordingNotes = resizeArray(recordingNotes, recordingSize, i);
@@ -94,7 +97,8 @@ void loop() {
           noTone(buzzerPin);
           tone(buzzerPin, freq[i]);
         }
-        else if (reading == HIGH && lastReading[i] == LOW) {
+        //else if (reading == HIGH && lastReading[i] == LOW) {
+        else{
           Serial.println("Rest recorded");
 
           recordingNotes = resizeArray(recordingNotes, recordingSize, -1);
@@ -120,7 +124,7 @@ void loop() {
       digitalWrite(leds[i], LOW);
     }
 
-    for(int i = 0; i < recordingSize; i++){
+    for (int i = 0; i < recordingSize; i++) {
       Serial.print("*(recordingTime + i) - recordingStart)");
       Serial.println(*(recordingTime + i) - recordingStart);
     }
@@ -131,7 +135,7 @@ void loop() {
 
     while (!playbackDone) {
       //Serial.println("trying to playback");
-      
+
       if (abs((millis() - playbackStartTime) - (*(recordingTime + noteCounter) - recordingStart)) < 30) {
 
         if (*(recordingNotes + noteCounter) != -1) {
@@ -162,7 +166,7 @@ void loop() {
     }
 
     digitalWrite(leds[*(recordingNotes + noteCounter - 1)], LOW);
-    
+
     digitalWrite(recLed, HIGH);
     delay(300);
     digitalWrite(recLed, LOW);
@@ -187,6 +191,8 @@ int* resizeArray(int *arr, int len, int num) {
 
   *(tempArr + len) = num;
 
+  delete [] arr;
+  
   return tempArr;
 }
 
@@ -200,6 +206,8 @@ unsigned long* resizeArray(unsigned long *arr, int len, unsigned long num) {
   }
 
   *(tempArr + len) = num;
+
+  delete [] arr;
 
   return tempArr;
 }
