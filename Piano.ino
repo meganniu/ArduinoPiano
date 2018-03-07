@@ -1,3 +1,5 @@
+//hello world!!
+
 int btns[] = {30, 32, 34, 36, 38, 40, 42, 44}; //C4 to C5
 int btnsSize = 8;
 int leds[] = {31, 33, 35, 37, 39, 41, 43, 45};
